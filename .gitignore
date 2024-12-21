@@ -1,0 +1,26 @@
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore binary files
+*.bin
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore log files
+*.log
+
+# Ignore environment directories
+env/
+.env/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Models
+*.bin
+*.safetensors
+*.pt
+*.pth
