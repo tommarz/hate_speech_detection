@@ -1,0 +1,80 @@
+settings:
+  default_json_path: "splits.json"
+  default_user_key: 
+    echo: "user_id"
+    gab: "user_id"
+    parler: "user_id"
+  project_name: "hate_speech_detection_thesis"
+  dataset_name: "echo"
+  seed: 42
+  device: "cuda"
+  num_workers: 4
+  external_data_dir: "/sise/Yalla_work/data"
+
+data:
+  main_dir: "data"
+  post_level_dir: "${data.main_dir}/post_level"
+  user_level_dir: "${data.main_dir}/user_level"
+  network_level_dir: "${data.main_dir}/network_level"
+  post_level_file_template: "${data.post_level_dir}/{dataset_name}_posts_2_labels.tsv"
+  user_level_file_template: "${data.user_level_dir}/{dataset_name}_users_2_labels.tsv"
+
+preprocessing:
+  echo:
+    data_path: "/sise/Yalla_work/data/echoes/only_english/recent_history.zip"
+    # output_path: ${data.network_level_dir}/echo/edge_list.tsv
+    ignore_punct: True
+    ignore_rt: False
+  gab:
+    data_path: "/sise/Yalla_work/data/hate_speech/gab/data/gab_posts_jan_2018.json"
+    users_info_path: "/sise/Yalla_work/data/hate_speech/gab/data/users_info_as_df.p"
+    ignore_punct: False
+    ignore_rt: False
+  parler:
+    data_path: "/sise/Yalla_work/data/parler/parler_annotated_users_posts.tsv"
+    comments_path: "path/to/comments.p"
+    echos_path: "path/to/echos.p"
+    in_reply_to_dict: {'tom': 'tom'}
+
+social_interactions:
+  echo: "${settings.external_data_dir}/echoes/only_english/recent_history.zip"
+  gab: "${settings.external_data_dir}/hate_speech/gab/data/gab_posts_jan_2018.json"
+  parler: "${settings.external_data_dir}/parler/parler_annotated_users_posts.tsv"
+
+experiments:
+  main_dir: "experiments"
+  post_level_dir: "${experiments.main_dir}/post_level"
+  post_level_results_dir: "${experiments.post_level_dir}/results"
+  post_level_logging_dir: "${experiments.post_level_dir}/logs"
+  user_level_dir: "${experiments.main_dir}/user_level"
+  user_level_results_dir: "${experiments.user_level_dir}/results"
+  user_level_logging_dir: "${experiments.user_level_dir}/logs"
+  network_level_dir: "${experiments.main_dir}/network_level"
+  network_level_results_dir: "${experiments.network_level_dir}/results"
+  network_level_logging_dir: "${experiments.network_level_dir}/logs"
+
+posts:
+  echo:
+    data_path: "/sise/Yalla_work/data/echoes/only_english/recent_history.zip"
+    output_path: "path/to/processed_tweets.csv"
+  gab:
+    data_path: "/sise/Yalla_work/data/hate_speech/gab/data/gab_posts_jan_2018.json"
+    output_path: "path/to/processed_gab_posts.csv"
+  parler:
+    data_path: "/sise/Yalla_work/data/parler/parler_annotated_users_posts.tsv"
+    comments_path: "path/to/comments.p"
+    echos_path: "path/to/echos.p"
+    in_reply_to_dict: {}
+
+models:
+  post_level:
+    echo:
+      model_name: "finetuned_twitter_hate_speech_roberta"
+      tokenizer_name: "christinacdl/XLM_RoBERTa-Multilingual-Hate-Speech-Detection-New"
+      best_model_path: "experiments/post_level/results/echo/twitter-roberta-base-hate-latest/20241223_164844/checkpoint-130"
+    gab:
+      model_path: "path/to/model.pth"
+      tokenizer_path: "path/to/tokenizer.pth"
+    parler:
+      model_path: "christinacdl/XLM_RoBERTa-Multilingual-Hate-Speech-Detection-New"
+      tokenizer_path: "christinacdl/XLM_RoBERTa-Multilingual-Hate-Speech-Detection-New"
